@@ -1,3 +1,5 @@
+import Models.Contact;
+import Models.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -21,10 +23,6 @@ public class TestBase {
         wd.navigate().to("https://contacts-app.tobbymarshall815.vercel.app/");
     }
 
-    @AfterSuite
-    public void tearDown(){
-        wd.quit();
-    }
 
     public void fillByElement(WebElement element, String text){
         element.click();
@@ -71,5 +69,52 @@ public class TestBase {
         loginButton.click();
         pause(20000);
 
+    }
+
+    public void openLogRegForm() {
+        wd.findElement(By.xpath("//a[text()='LOGIN']")).click();
+    }
+
+    public void clickLoginButton() {
+        wd.findElement(By.xpath("//button[.=' Login']")).click();
+    }
+
+    public void fillLogRegForm(User user) {
+        fillByLocator(By.xpath("//input[@placeholder='Email']"), user.getEmail());
+        fillByLocator(By.xpath("//input[@placeholder='Password']"), user.getPassword());
+    }
+
+    public String takeText(By locator){
+        return wd.findElement(locator).getText();
+    }
+
+    public String takeText(WebElement element){
+        return element.getText();
+    }
+
+    public boolean isLoggedIn(){
+        return  isElementExist(By.xpath("//button[.='Sign Out']"));
+    }
+
+    public void openContactForm(){
+        wd.findElement(By.cssSelector("[href='/add']")).click();
+    }
+
+    public void fillContactForm(Contact contact){
+        fillByLocator(By.xpath("//input[@placeholder='Name']"), contact.getName());
+        fillByLocator(By.xpath("//input[@placeholder='Last Name']"), contact.getLastName());
+        fillByLocator(By.xpath("//input[@placeholder='Phone']"), contact.getPhone());
+        fillByLocator(By.xpath("//input[@placeholder='email']"), contact.getEmail());
+        fillByLocator(By.xpath("//input[@placeholder='Address']"), contact.getAddress());
+        fillByLocator(By.xpath("//input[@placeholder='description']"), contact.getDescription());
+    }
+
+    public void saveNewContact(){
+        wd.findElement(By.xpath("//button/b[text()='Save']")).click(); // //button[.='Save']
+    }
+
+    @AfterSuite // (enabled = false)
+    public void tearDown(){
+        wd.quit();
     }
 }

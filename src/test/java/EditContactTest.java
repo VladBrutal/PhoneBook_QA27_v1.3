@@ -41,11 +41,22 @@ public class EditContactTest extends TestBase {
         addressEl.click();
         addressEl.sendKeys("*");
         // description
-        WebElement descriptionEl = wd.findElement(By.xpath("//input[@placeholder='desc']"));
+        WebElement descriptionEl = wd.findElement(By.xpath("//input[@placeholder='description']"));
         descriptionEl.click();
         descriptionEl.sendKeys("*");
 
         wd.findElement(By.xpath("//button[.='Save']")).click();
+
+    }
+
+    @Test
+    public void test(){
+        wd.findElement(By.xpath("//a[text()='CONTACTS']")).click();
+        wd.findElement(By.cssSelector(".contact-item_card__2SOIM")).click();
+        wd.findElement(By.xpath("//button[text()='Edit']")).click();
+
+        wd.findElement(By.xpath("//input[@placeholder='Name']")).click();
+        pause(6000);
 
 
     }

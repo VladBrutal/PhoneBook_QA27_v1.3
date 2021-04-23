@@ -1,3 +1,4 @@
+import Models.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -28,10 +29,25 @@ public class LoginTest extends TestBase {
         fillByLocator(By.cssSelector("input[placeholder='Email']"), "josephbenmoshe@yahoo.com");
         fillByLocator(By.cssSelector("[placeholder='Password']"), "$V06021988m");
         wd.findElement(By.cssSelector("button:first-of-type")).click();
+
         pause(20000);
         String text = wd.findElement(By.xpath("//button[.='Sign Out']")).getText();
         Assert.assertEquals(text, "Sign Out");
     }
+
+    @Test
+    public void LogingWithModel(){
+        // open login/registration form
+        openLogRegForm();
+        fillLogRegForm(new User()
+                .withEmail("josephbenmoshe@yahoo.com")
+                .withPassword("$V06021988m"));
+        clickLoginButton();
+        Assert.assertEquals(takeText(By.xpath("//button[.='Sign Out']")), "Sign Out");
+        Assert.assertTrue(isLoggedIn());
+    }
+
+
 
 
 }

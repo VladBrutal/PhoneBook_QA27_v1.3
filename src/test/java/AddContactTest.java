@@ -1,4 +1,6 @@
+import Models.Contact;
 import org.openqa.selenium.By;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -11,6 +13,7 @@ public class AddContactTest extends TestBase{
             String login = "josephbenmoshe@yahoo.com";
             String password = "$V06021988m";
             loginTest(login,password);
+            pause(10000);
         }
     }
 
@@ -28,9 +31,28 @@ public class AddContactTest extends TestBase{
 
         wd.findElement(By.cssSelector(".add_form__2rsm2 button")).click();
         pause(1500);
-
-
     }
+
+    @Test
+    public void addContactByModel(){
+        int index=(int)((System.currentTimeMillis()/1000)%3600);
+        Contact contact = new Contact()
+                .withName("Lola"+index)
+                .withLastName("Now"+index)
+                .withPhone("9876"+index)
+                .withEmail("Lola"+index+"@mail.ru")
+                .withAddress("Haifa")
+                .withDescription("university friend");
+        openContactForm();
+        fillContactForm(contact);
+        saveNewContact();
+        pause(5000);
+        Assert.assertTrue(wd.findElement(By.xpath("//h2")).getText().contains(contact.getName()));
+        Assert.assertTrue(isElementExist(By.xpath("//a[@class='active' and text()='CONTACTS']"))); // home work test NEW
+
+        // Assert.assertTrue(wd.findElement(By.xpath("add_form__2rsm2")).getText().contains("CONTACTS")); // doesn't work
+    }
+
     @AfterMethod
     public void postconditions(){
         wd.findElement(By.xpath("//button[.='Sign Out']")).click();
